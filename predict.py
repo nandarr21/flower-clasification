@@ -1,25 +1,3 @@
-"""
-predict.py
-====================
-TAHAP 8 (Bab 11): Prediksi gambar bunga menggunakan model hasil training.
-
-Langkah prediksi:
-    1. Load model (model/model_vgg16_flower.keras)
-    2. Terima path gambar (upload)
-    3. Resize gambar menjadi 224x224
-    4. Rescale piksel (1./255)
-    5. Prediksi kelas menggunakan model
-    6. Ambil confidence score (nilai probabilitas tertinggi)
-    7. Tampilkan nama bunga hasil prediksi
-
-Dapat dijalankan langsung dari terminal:
-    python predict.py path/ke/gambar.jpg
-
-Atau di-import sebagai modul (dipakai oleh app.py):
-    from predict import predict_image
-    label, confidence = predict_image("static/uploads/gambar.jpg")
-"""
-
 import sys
 import numpy as np
 from tensorflow.keras.models import load_model

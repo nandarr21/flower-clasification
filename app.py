@@ -1,19 +1,3 @@
-"""
-app.py
-====================
-TAHAP 9 (Bab 11): Aplikasi Web Flask untuk Klasifikasi Jenis Bunga
-menggunakan model Transfer Learning VGG16.
-
-Rute (routes):
-    /            -> Halaman Home (penjelasan singkat + tombol upload)
-    /predict     -> GET: halaman upload+form, POST: proses upload & prediksi
-    /result      -> Halaman hasil (gambar, nama bunga, confidence)
-
-Validasi:
-    - Hanya menerima file berekstensi jpg, jpeg, png
-    - Menampilkan pesan flash jika file bukan gambar / upload gagal
-"""
-
 import os
 import uuid
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -97,7 +81,6 @@ def predict():
     return render_template("predict.html")
 
 
-if __name__ == "__main__":
-    # Load model sekali di awal agar prediksi pertama tidak lambat
-    get_model()
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

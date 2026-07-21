@@ -1,0 +1,464 @@
+/* ============================================================
+   FLOWERCLASSIFIER — "HERBARIUM FIELD GUIDE" DESIGN SYSTEM
+   ============================================================ */
+
+:root {
+    /* -- Palette: aged specimen paper + botanical ink -- */
+    --paper: #F4EEDE;
+    --paper-dark: #E9DFC6;
+    --paper-line: #D8CBA8;
+    --ink: #24301F;
+    --ink-soft: #58604F;
+    --moss: #46603E;
+    --moss-dark: #2F4229;
+    --clay-rose: #A83E4D;
+    --gold: #BE8B1E;
+
+    /* -- Per-species specimen tag colors -- */
+    --tag-daisy: #8C8362;      --tag-daisy-bg: #EFE9D4;
+    --tag-dandelion: #B9860B;  --tag-dandelion-bg: #F8ECC6;
+    --tag-rose: #A83E4D;       --tag-rose-bg: #F3DEE1;
+    --tag-sunflower: #C97A1E;  --tag-sunflower-bg: #F8E5C6;
+    --tag-tulip: #8B3A62;      --tag-tulip-bg: #F0DDE9;
+
+    /* -- Type -- */
+    --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+/* ---------------------------------------------------------- */
+/* Base                                                        */
+/* ---------------------------------------------------------- */
+body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    background-image:
+        radial-gradient(circle at 1px 1px, rgba(36,48,31,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+}
+
+h1, h2, h3, h4, .display-serif {
+    font-family: var(--font-display);
+    color: var(--ink);
+}
+
+.eyebrow {
+    font-family: var(--font-mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: var(--moss);
+}
+
+a { color: var(--moss-dark); }
+a:hover { color: var(--clay-rose); }
+
+/* ---------------------------------------------------------- */
+/* Navbar — specimen ledger header                             */
+/* ---------------------------------------------------------- */
+.fc-navbar {
+    background-color: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+}
+
+.fc-navbar .navbar-brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+}
+
+.fc-navbar .navbar-brand .brand-mark {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--clay-rose);
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.fc-navbar .nav-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft) !important;
+    padding: 0.4rem 0.9rem !important;
+}
+
+.fc-navbar .nav-link:hover,
+.fc-navbar .nav-link.active {
+    color: var(--clay-rose) !important;
+}
+
+/* ---------------------------------------------------------- */
+/* Hero — field guide cover                                    */
+/* ---------------------------------------------------------- */
+.hero {
+    background: var(--paper);
+    border-bottom: 1px solid var(--paper-line);
+    padding: 4.5rem 0 3.5rem;
+    position: relative;
+}
+
+.hero .hero-index {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--moss);
+    border: 1px solid var(--moss);
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    margin-bottom: 1.4rem;
+}
+
+.hero h1 {
+    font-size: clamp(2.1rem, 4vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.12;
+    max-width: 14ch;
+}
+
+.hero .hero-lede {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-top: 1.1rem;
+}
+
+.btn-herbarium {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 0.75rem 1.6rem;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-herbarium:hover {
+    background-color: var(--clay-rose);
+    border-color: var(--clay-rose);
+    color: var(--paper);
+    transform: translateY(-1px);
+}
+
+.btn-herbarium-outline {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 0.75rem 1.6rem;
+    transition: all 0.15s ease;
+}
+
+.btn-herbarium-outline:hover {
+    background-color: var(--ink);
+    color: var(--paper);
+}
+
+/* ---------------------------------------------------------- */
+/* Species Index — specimen cards on the Home page             */
+/* ---------------------------------------------------------- */
+.species-index {
+    padding: 3rem 0 4rem;
+}
+
+.species-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 576px) {
+    .species-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 992px) {
+    .species-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+.col-species { width: 100%; }
+
+.species-card {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 1.4rem 1.2rem 1.2rem;
+    height: 100%;
+    position: relative;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.species-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 4px 6px 0 var(--ink);
+}
+
+.species-card .species-no {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+}
+
+.species-card .species-icon {
+    width: 46px;
+    height: 46px;
+    margin: 0.6rem 0 0.8rem;
+}
+
+.species-card h5 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin-bottom: 0.15rem;
+}
+
+.species-card .species-latin {
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+.species-card .species-swatch {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+/* ---------------------------------------------------------- */
+/* Upload / Prediction page — specimen submission envelope     */
+/* ---------------------------------------------------------- */
+.specimen-panel {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 2.2rem;
+}
+
+.specimen-panel .panel-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--moss);
+}
+
+.dropzone {
+    border: 2px dashed var(--ink-soft);
+    border-radius: 3px;
+    background: var(--paper-dark);
+    padding: 2.2rem 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone.dz-active {
+    border-color: var(--clay-rose);
+    background: var(--paper);
+}
+
+.dropzone .dz-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0.6rem;
+    color: var(--ink-soft);
+}
+
+.dropzone .dz-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+}
+
+.dropzone .dz-hint {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 0.3rem;
+}
+
+.preview-frame {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    padding: 10px 10px 26px;
+    box-shadow: 0 6px 18px rgba(36,48,31,0.18);
+    transform: rotate(-1deg);
+}
+
+.preview-frame img {
+    display: block;
+    max-height: 260px;
+    border: 1px solid var(--paper-line);
+}
+
+.preview-frame::before,
+.preview-frame::after {
+    content: "";
+    position: absolute;
+    width: 34px;
+    height: 14px;
+    background: rgba(190, 139, 30, 0.55);
+    top: -8px;
+}
+.preview-frame::before { left: 14px; transform: rotate(-8deg); }
+.preview-frame::after { right: 14px; transform: rotate(8deg); }
+
+/* ---------------------------------------------------------- */
+/* Result page — specimen identification card                 */
+/* ---------------------------------------------------------- */
+.id-card {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    padding: 2.2rem;
+}
+
+.id-card .id-photo {
+    background: #fff;
+    padding: 10px 10px 26px;
+    box-shadow: 0 8px 20px rgba(36,48,31,0.2);
+    display: inline-block;
+    transform: rotate(-1deg);
+}
+
+.id-card .id-photo img {
+    display: block;
+    max-height: 280px;
+    border: 1px solid var(--paper-line);
+}
+
+.id-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 0.9rem;
+}
+
+.id-tag .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.id-card h2 {
+    font-family: var(--font-display);
+    font-size: 2.1rem;
+    margin-bottom: 0.2rem;
+}
+
+.confidence-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+
+.confidence-gauge {
+    width: 100%;
+    height: 8px;
+    background: var(--paper-dark);
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.confidence-gauge .fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+/* Tag color helper classes */
+.tag-daisy      { color: var(--tag-daisy);      background: var(--tag-daisy-bg); }
+.tag-dandelion  { color: var(--tag-dandelion);  background: var(--tag-dandelion-bg); }
+.tag-rose       { color: var(--tag-rose);       background: var(--tag-rose-bg); }
+.tag-sunflower  { color: var(--tag-sunflower);  background: var(--tag-sunflower-bg); }
+.tag-tulip      { color: var(--tag-tulip);      background: var(--tag-tulip-bg); }
+
+/* ---------------------------------------------------------- */
+/* Info strip (how it works)                                   */
+/* ---------------------------------------------------------- */
+.how-it-works {
+    border-top: 1px solid var(--paper-line);
+    border-bottom: 1px solid var(--paper-line);
+    padding: 3rem 0;
+    background: var(--paper-dark);
+}
+
+.how-step .step-no {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--moss);
+    letter-spacing: 0.1em;
+}
+
+.how-step h6 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    margin: 0.4rem 0 0.3rem;
+}
+
+.how-step p {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+}
+
+/* ---------------------------------------------------------- */
+/* Footer                                                       */
+/* ---------------------------------------------------------- */
+.fc-footer {
+    background: var(--ink);
+    color: var(--paper-dark);
+    padding: 1.4rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------- */
+/* Alerts (flash messages), tuned to the palette                */
+/* ---------------------------------------------------------- */
+.alert-herbarium {
+    background: var(--tag-rose-bg);
+    border: 1px solid var(--clay-rose);
+    color: var(--ink);
+    border-radius: 3px;
+    font-family: var(--font-body);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .species-card, .btn-herbarium, .btn-herbarium-outline, .dropzone {
+        transition: none;
+    }
+}

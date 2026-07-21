@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Hasil Prediksi - Klasifikasi Jenis Bunga{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <span class="eyebrow">Catatan Spesimen</span>
+            <h2 class="mt-2 mb-4" style="font-size: 1.7rem;">Hasil identifikasi</h2>
+
+            <div class="id-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-5 text-center">
+                        <div class="id-photo">
+                            <img src="{{ url_for('static', filename='uploads/' + image_path.split('/')[-1]) }}"
+                                 alt="Gambar yang diupload">
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <span class="id-tag tag-{{ label|lower }}">
+                            <span class="dot" style="background: currentColor;"></span>
+                            Teridentifikasi
+                        </span>
+                        <h2>{{ label }}</h2>
+
+                        <div class="mt-4">
+                            <div class="confidence-label">
+                                <span>Confidence</span>
+                                <span>{{ confidence }}%</span>
+                            </div>
+                            <div class="confidence-gauge">
+                                <div class="fill tag-{{ label|lower }}" style="width: {{ confidence }}%; background: currentColor;"></div>
+                            </div>
+                        </div>
+
+                        <a href="{{ url_for('predict') }}" class="btn btn-herbarium-outline mt-4">
+                            Identifikasi Gambar Lain
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

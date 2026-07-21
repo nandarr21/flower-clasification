@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Prediksi - Klasifikasi Jenis Bunga{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <span class="eyebrow">Formulir Spesimen</span>
+            <h2 class="mt-2 mb-4" style="font-size: 1.7rem;">Kirim foto bunga untuk diidentifikasi</h2>
+
+            <div class="specimen-panel">
+                <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
+
+                    <label for="fileInput" class="dropzone d-block" id="dropzoneEl">
+                        <svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 16V4M12 4l-4 4M12 4l4 4"/>
+                            <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+                        </svg>
+                        <div class="dz-label">Klik atau seret gambar ke sini</div>
+                        <div class="dz-hint">JPG, JPEG, atau PNG &middot; maks. 5MB</div>
+                    </label>
+                    <input class="d-none" type="file" id="fileInput" name="file"
+                           accept=".jpg,.jpeg,.png" onchange="previewImage(event)" required>
+
+                    <!-- Preview gambar sebelum diprediksi -->
+                    <div class="text-center d-none" id="previewWrap" style="margin-top: 1.6rem;">
+                        <div class="preview-frame">
+                            <img id="preview" src="#" alt="Preview gambar">
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-herbarium">Identifikasi Spesimen</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const preview = document.getElementById('preview');
+        const wrap = document.getElementById('previewWrap');
+        const file = event.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            wrap.classList.remove('d-none');
+        }
+    }
+
+    // Efek visual saat file di-drag di atas dropzone
+    const dz = document.getElementById('dropzoneEl');
+    ['dragenter', 'dragover'].forEach(evt =>
+        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('dz-active'); })
+    );
+    ['dragleave', 'drop'].forEach(evt =>
+        dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('dz-active'); })
+    );
+    dz.addEventListener('drop', e => {
+        const fileInput = document.getElementById('fileInput');
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
+{% endblock %}

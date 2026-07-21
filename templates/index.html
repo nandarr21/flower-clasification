@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Klasifikasi Jenis Bunga{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <span class="hero-index">Field Guide &middot; Vol. 01</span>
+                <h1>Kenali jenis bunga dari satu foto.</h1>
+                <p class="hero-lede">
+                    FlowerClassifier membaca ciri visual sebuah bunga &mdash; bentuk kelopak,
+                    warna, dan tekstur &mdash; menggunakan model <strong>Transfer Learning VGG16</strong>,
+                    lalu mencocokkannya dengan lima spesies pada indeks di bawah ini.
+                </p>
+                <div class="mt-4 d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('predict') }}" class="btn btn-herbarium">Mulai Prediksi</a>
+                    <a href="#species-index" class="btn btn-herbarium-outline">Lihat Indeks Spesies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 how-step">
+                <div class="step-no">01 &mdash; Unggah</div>
+                <h6>Kirim foto bunga</h6>
+                <p>Format JPG, JPEG, atau PNG, difoto sedekat mungkin ke bunga.</p>
+            </div>
+            <div class="col-md-4 how-step">
+                <div class="step-no">02 &mdash; Analisis</div>
+                <h6>Diproses oleh VGG16</h6>
+                <p>Model transfer learning mengekstrak fitur visual dari gambar.</p>
+            </div>
+            <div class="col-md-4 how-step">
+                <div class="step-no">03 &mdash; Hasil</div>
+                <h6>Terima catatan spesimen</h6>
+                <p>Nama spesies dan tingkat keyakinan (confidence) ditampilkan.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Species Index -->
+<section class="species-index" id="species-index">
+    <div class="container">
+        <span class="eyebrow">Indeks Spesies</span>
+        <h2 class="mt-2 mb-4" style="font-size: 1.7rem;">Lima jenis bunga yang dikenali</h2>
+
+        <div class="row g-3 species-grid">
+
+            <div class="col-species">
+                <div class="species-card">
+                    <span class="species-swatch" style="background: var(--tag-daisy);"></span>
+                    <div class="species-no">No. 01</div>
+                    <svg class="species-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="color: var(--tag-daisy);">
+                        <circle cx="24" cy="24" r="5" fill="currentColor" stroke="none"/>
+                        <g>
+                            <ellipse cx="24" cy="10" rx="4" ry="8"/>
+                            <ellipse cx="24" cy="38" rx="4" ry="8"/>
+                            <ellipse cx="10" cy="24" rx="8" ry="4"/>
+                            <ellipse cx="38" cy="24" rx="8" ry="4"/>
+                            <ellipse cx="14" cy="14" rx="4" ry="8" transform="rotate(-45 14 14)"/>
+                            <ellipse cx="34" cy="34" rx="4" ry="8" transform="rotate(-45 34 34)"/>
+                            <ellipse cx="34" cy="14" rx="4" ry="8" transform="rotate(45 34 14)"/>
+                            <ellipse cx="14" cy="34" rx="4" ry="8" transform="rotate(45 14 34)"/>
+                        </g>
+                    </svg>
+                    <h5>Daisy</h5>
+                    <div class="species-latin">Bellis perennis</div>
+                </div>
+            </div>
+
+            <div class="col-species">
+                <div class="species-card">
+                    <span class="species-swatch" style="background: var(--tag-dandelion);"></span>
+                    <div class="species-no">No. 02</div>
+                    <svg class="species-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="color: var(--tag-dandelion);">
+                        <circle cx="24" cy="20" r="9"/>
+                        <path d="M24 20 L24 40" stroke-width="1.6"/>
+                        <path d="M14 15 L11 12 M34 15 L37 12 M12 22 L8 22 M36 22 L40 22 M15 27 L12 30 M33 27 L36 30" stroke-width="1"/>
+                    </svg>
+                    <h5>Dandelion</h5>
+                    <div class="species-latin">Taraxacum officinale</div>
+                </div>
+            </div>
+
+            <div class="col-species">
+                <div class="species-card">
+                    <span class="species-swatch" style="background: var(--tag-rose);"></span>
+                    <div class="species-no">No. 03</div>
+                    <svg class="species-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="color: var(--tag-rose);">
+                        <path d="M24 30 C15 30 12 22 18 17 C21 20 24 20 24 17 C24 20 27 20 30 17 C36 22 33 30 24 30 Z"/>
+                        <path d="M24 30 C24 30 20 34 24 40 C28 34 24 30 24 30 Z"/>
+                        <path d="M24 40 L24 44" stroke-width="1.6"/>
+                    </svg>
+                    <h5>Rose</h5>
+                    <div class="species-latin">Rosa spp.</div>
+                </div>
+            </div>
+
+            <div class="col-species">
+                <div class="species-card">
+                    <span class="species-swatch" style="background: var(--tag-sunflower);"></span>
+                    <div class="species-no">No. 04</div>
+                    <svg class="species-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="color: var(--tag-sunflower);">
+                        <circle cx="24" cy="22" r="6" fill="currentColor" stroke="none" opacity="0.25"/>
+                        <circle cx="24" cy="22" r="6"/>
+                        <g>
+                            <path d="M24 8 L24 15 M24 29 L24 36 M10 22 L17 22 M31 22 L38 22" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M14 12 L19 17 M34 12 L29 17 M14 32 L19 27 M34 32 L29 27" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+                        <path d="M24 36 L22 44" stroke-width="1.6"/>
+                    </svg>
+                    <h5>Sunflower</h5>
+                    <div class="species-latin">Helianthus annuus</div>
+                </div>
+            </div>
+
+            <div class="col-species">
+                <div class="species-card">
+                    <span class="species-swatch" style="background: var(--tag-tulip);"></span>
+                    <div class="species-no">No. 05</div>
+                    <svg class="species-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="color: var(--tag-tulip);">
+                        <path d="M18 26 C16 18 18 12 24 10 C30 12 32 18 30 26 C28 23 26 26 24 22 C22 26 20 23 18 26 Z"/>
+                        <path d="M24 26 L24 44" stroke-width="1.6"/>
+                        <path d="M24 34 C20 34 18 31 18 29 M24 38 C28 38 30 35 30 33" stroke-width="1.2"/>
+                    </svg>
+                    <h5>Tulip</h5>
+                    <div class="species-latin">Tulipa gesneriana</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

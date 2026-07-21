@@ -1,23 +1,17 @@
 import os
 import sys
 import numpy as np
-import tensorflow as tf
+import requests
+
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 
 
-# ============================================================
-# KONFIGURASI
-# ============================================================
+# URL model di Hugging Face
+MODEL_URL = "https://huggingface.co/nandar21/flower-vgg16-model/resolve/main/model_vgg16_flower.keras"
 
-# Ambil folder tempat file predict.py berada
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Path model absolut
-MODEL_PATH = os.path.join(
-    BASE_DIR,
-    "model",
-    "model_vgg16_flower.keras"
-)
+# Lokasi penyimpanan model di Railway
+MODEL_PATH = "/tmp/model_vgg16_flower.keras"
 
 IMG_SIZE = (224, 224)
 
@@ -29,144 +23,140 @@ CLASS_NAMES = [
     "tulip"
 ]
 
-
-# ============================================================
-# MODEL CACHE
-# ============================================================
-
 _model = None
 
 
+def download_model():
+    """
+    Download model dari Hugging Face jika belum tersedia.
+    """
+
+    if os.path.exists(MODEL_PATH):
+        print("Model sudah tersedia:", MODEL_PATH)
+        return
+
+    print("Model tidak ditemukan secara lokal.")
+    print("Mengunduh model dari Hugging Face...")
+
+    try:
+        response = requests.get(
+            MODEL_URL,
+            stream=True,
+            timeout=300
+        )
+
+        response.raise_for_status()
+
+        total_size = int(
+            response.headers.get("content-length", 0)
+        )
+
+        downloaded = 0
+
+        with open(MODEL_PATH, "wb") as f:
+
+            for chunk in response.iter_content(
+                chunk_size=1024 * 1024
+            ):
+
+                if chunk:
+
+                    f.write(chunk)
+
+                    downloaded += len(chunk)
+
+                    if total_size:
+                        progress = (
+                            downloaded / total_size
+                        ) * 100
+
+                        print(
+                            f"Download: {progress:.1f}%",
+                            end="\r"
+                        )
+
+        print("\nModel berhasil diunduh.")
+        print("Lokasi:", MODEL_PATH)
+
+    except Exception as e:
+
+        print(
+            "Gagal mengunduh model:",
+            str(e)
+        )
+
+        # Hapus file jika download tidak selesai
+        if os.path.exists(MODEL_PATH):
+            os.remove(MODEL_PATH)
+
+        raise
+
+
 def get_model():
-    """
-    Load model hanya sekali.
-    Model disimpan di cache agar tidak di-load berulang kali.
-    """
 
     global _model
 
     if _model is None:
 
+        # Pastikan model tersedia
+        download_model()
+
         print(
-            f"Loading model dari: {MODEL_PATH}",
-            flush=True
+            f"Loading model dari: {MODEL_PATH}"
         )
 
-        # Pastikan file model ada
-        if not os.path.exists(MODEL_PATH):
-            raise FileNotFoundError(
-                f"Model tidak ditemukan di: {MODEL_PATH}"
-            )
+        _model = load_model(
+            MODEL_PATH,
+            compile=False
+        )
 
-        try:
-
-            _model = tf.keras.models.load_model(
-                MODEL_PATH,
-                compile=False
-            )
-
-            print(
-                "Model berhasil dimuat!",
-                flush=True
-            )
-
-        except Exception as e:
-
-            print(
-                f"Gagal memuat model: {e}",
-                flush=True
-            )
-
-            raise
+        print("Model berhasil dimuat!")
 
     return _model
 
 
-# ============================================================
-# PREDIKSI
-# ============================================================
-
 def predict_image(img_path):
-    """
-    Melakukan prediksi kelas bunga dari sebuah file gambar.
 
-    Return:
-        label (str)
-        confidence (float) -> persen 0-100
-    """
+    model = get_model()
 
-    # Pastikan file gambar ada
     if not os.path.exists(img_path):
         raise FileNotFoundError(
             f"Gambar tidak ditemukan: {img_path}"
         )
 
-    # Ambil model
-    model = get_model()
-
-    # --------------------------------------------------------
-    # 1. Load gambar
-    # --------------------------------------------------------
-
+    # Load gambar
     img = image.load_img(
         img_path,
         target_size=IMG_SIZE
     )
 
-    # --------------------------------------------------------
-    # 2. Convert gambar ke numpy array
-    # --------------------------------------------------------
-
+    # Convert ke numpy
     img_array = image.img_to_array(img)
 
-    # --------------------------------------------------------
-    # 3. Normalisasi
-    # --------------------------------------------------------
-
+    # Normalisasi
     img_array = img_array / 255.0
 
-    # --------------------------------------------------------
-    # 4. Tambahkan batch dimension
-    # Shape:
-    # (224, 224, 3)
-    # menjadi:
-    # (1, 224, 224, 3)
-    # --------------------------------------------------------
-
+    # Tambahkan batch dimension
     img_array = np.expand_dims(
         img_array,
         axis=0
     )
 
-    # --------------------------------------------------------
-    # 5. Prediksi
-    # --------------------------------------------------------
-
+    # Prediksi
     predictions = model.predict(
         img_array,
         verbose=0
     )[0]
 
-    # --------------------------------------------------------
-    # 6. Ambil index probabilitas terbesar
-    # --------------------------------------------------------
-
+    # Ambil kelas terbaik
     predicted_index = int(
         np.argmax(predictions)
     )
-
-    # --------------------------------------------------------
-    # 7. Confidence
-    # --------------------------------------------------------
 
     confidence = (
         float(predictions[predicted_index])
         * 100
     )
-
-    # --------------------------------------------------------
-    # 8. Nama kelas
-    # --------------------------------------------------------
 
     label = CLASS_NAMES[
         predicted_index
@@ -174,10 +164,6 @@ def predict_image(img_path):
 
     return label, confidence
 
-
-# ============================================================
-# TEST VIA TERMINAL
-# ============================================================
 
 if __name__ == "__main__":
 
@@ -188,7 +174,7 @@ if __name__ == "__main__":
         )
 
         print(
-            "python predict.py path/ke/gambar.jpg"
+            'python predict.py "path/ke/gambar.jpg"'
         )
 
         sys.exit(1)
